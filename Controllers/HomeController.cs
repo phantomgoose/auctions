@@ -82,13 +82,13 @@ namespace netbelt.Controllers
             // i mean aside from creating an async server side function that runs on an interval to check for ended auctions, this is the best solution i can come up with at this time
             List<Auction> ended_auctions = _context.Auctions.Include(a => a.Bids).Include(a => a.User).Where(a => a.EndDate <= DateTime.UtcNow && a.Resolved == false).ToList();
             foreach(var auction in ended_auctions) {
+                var auction_owner = auction.User;
                 var top_bid = auction.Bids.OrderByDescending(b => b.Amount).Take(1).SingleOrDefault();
                 if (top_bid != null) {
-                    auction.User.WalletBalance += top_bid.Amount;
                     var bidding_user = _context.Users.Find(top_bid.UserID);
+                    auction_owner.WalletBalance += top_bid.Amount;
                     bidding_user.WalletBalance -= top_bid.Amount;
                     auction.Resolved = true;
-                    _context.Auctions.Add(auction);
                 }
             }
             _context.SaveChanges();
