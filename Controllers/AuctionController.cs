@@ -78,7 +78,7 @@ namespace netbelt.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            Auction auction = _context.Auctions.Include(a => a.User).Include(a => a.Bids).Where(a => a.ID == id).SingleOrDefault();
+            Auction auction = _context.Auctions.Include(a => a.User).Include(a => a.Bids).ThenInclude(b => b.User).Where(a => a.ID == id).SingleOrDefault();
             if (auction != null) {
                 ViewBag.Now = DateTime.UtcNow;
                 return View(auction);
@@ -119,7 +119,7 @@ namespace netbelt.Controllers
                 _context.SaveChanges();
                 return RedirectToAction("ShowAuction", new {id = model.AuctionID});
             }
-            Auction auction = _context.Auctions.Include(a => a.User).Include(a => a.Bids).Where(a => a.ID == model.AuctionID).SingleOrDefault();
+            Auction auction = _context.Auctions.Include(a => a.User).Include(a => a.Bids).ThenInclude(b => b.User).Where(a => a.ID == model.AuctionID).SingleOrDefault();
             ViewBag.Now = DateTime.UtcNow;
             return View("ShowAuction", auction);
         }

@@ -32,7 +32,7 @@ namespace netbelt
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IHostingEnvironment env)
         {
-            if (env.IsDevelopment() || true)
+            if (env.IsDevelopment())
             {
                 loggerFactory.AddConsole();
                 app.UseDeveloperExceptionPage();

@@ -30,7 +30,7 @@ namespace netbelt.Extensions {
             if (model.Amount > user.WalletBalance - held_amount) {
                 return new ValidationResult("You don't have enough money for this bid.");
             }
-            if (current_top_bid != null && model.Amount < current_top_bid.Amount) {
+            if (current_top_bid != null && model.Amount <= current_top_bid.Amount) {
                 return new ValidationResult("Your bid is too low!");
             }
             return ValidationResult.Success;
