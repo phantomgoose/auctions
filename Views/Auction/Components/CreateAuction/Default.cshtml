@@ -1,0 +1,22 @@
+@using System
+@model netbelt.ViewModels.CreateAuctionViewModel
+
+<form asp-controller="Auction" asp-action="Create" method="post">
+    <span asp-validation-for="ProductName"></span>
+    <label asp-for="ProductName">Product name:</label>
+    <input asp-for="ProductName">
+    <br>
+    <span asp-validation-for="Description"></span>
+    <label asp-for="Description">Description:</label>
+    <textarea asp-for="Description" cols="30" rows="10"></textarea>
+    <br>
+    <span asp-validation-for="StartingBid"></span>
+    <label asp-for="StartingBid">Starting bid:</label>
+    <input asp-for="StartingBid" type="number" min=".01" step=".01">
+    <br>
+    <span asp-validation-for="EndDate"></span>
+    <label asp-for="EndDate">End date:</label>
+    <input asp-for="EndDate" type="date" min="@ViewBag.Now" value="@ViewBag.Now">
+    <br>
+    <input type="submit" value="Create Auction">
+</form>

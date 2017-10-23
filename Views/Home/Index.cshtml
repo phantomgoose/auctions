@@ -1,0 +1,9 @@
+@{
+    ViewData["Title"] = "Home";
+}
+<div class="login-form">
+    @await Component.InvokeAsync("Login")
+</div>
+<div class="registration-form">
+    @await Component.InvokeAsync("Registration")
+</div>

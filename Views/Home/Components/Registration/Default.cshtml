@@ -1,0 +1,27 @@
+@model netbelt.ViewModels.RegistrationViewModel
+
+<h3>Register</h3>
+<form asp-controller="Home" asp-action="Register" method="post">
+    <span asp-validation-for="RegistrationUsername"></span>
+    <label asp-for="RegistrationUsername">Username:</label>
+    <input asp-for="RegistrationUsername">
+    <br>
+    <br>
+    <span asp-validation-for="RegistrationPassword"></span>
+    <label asp-for="RegistrationPassword">Password:</label>
+    <input asp-for="RegistrationPassword" type="password">
+    <br>
+    <span asp-validation-for="PasswordConfirmation"></span>
+    <label asp-for="PasswordConfirmation">Password confirmation:</label>
+    <input asp-for="PasswordConfirmation" type="password">
+    <br>
+    <span asp-validation-for="FirstName"></span>
+    <label asp-for="FirstName">First name:</label>
+    <input asp-for="FirstName">
+    <br>
+    <span asp-validation-for="LastName"></span>
+    <label asp-for="LastName">Last name:</label>
+    <input asp-for="LastName">
+    <br>
+    <input type="submit" value="Register">
+</form>

@@ -1,0 +1,32 @@
+@using Microsoft.AspNetCore.Http
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <!-- hacky way to check if the navbar should be displayed (ie we logged in already). NavBar is NOT shown as required on Home page in the exam screenshots, which is odd, but w/e -->
+    <!-- also not even attempting to float this shit to the right. CSS is the bane of my existence. -->
+    @if(ViewData["Title"] != null && ViewData["Title"] != "Home") {
+        <nav>
+        <span>Hi @Context.Session.GetString("FirstName")!</span>
+        <a asp-controller="Auction" asp-action="Index">Auctions</a> |
+        <a asp-controller="Home" asp-action="Logout">Log out</a>
+        </nav>
+    }
+    <h1>@ViewData["Title"]</h1>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+        
+        
+        <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,16 @@
+@using System
+@model netbelt.Models.Auction
+
+@{
+    ViewData["Title"] = Model.ProductName;
+    var time_remaining = (int)Math.Floor((Model.EndDate - ViewBag.Now).TotalDays) + " days"; // this will cause display issues for expired auctions, but those shouldn't be accessible via normal means
+    var temp_top_bid = Model.Bids.OrderByDescending(b => b.Amount).Take(1).SingleOrDefault();
+    var top_bid = temp_top_bid != null ? "$" + temp_top_bid.Amount.ToString() : "No bids yet!";
+}
+<p>Created by @Model.User.FirstName</p>
+<p>Time Remaining: @time_remaining</p>
+<p>@Model.Description</p>
+<p>Current Highest Bid: @if(temp_top_bid != null) {
+    <span>@top_bid by @temp_top_bid.User.FirstName @temp_top_bid.User.LastName</span>
+    } else { <span>No bids yet!</span> }</p>
+@await Component.InvokeAsync("CreateBid", Model.ID)

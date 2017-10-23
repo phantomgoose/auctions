@@ -1,0 +1,15 @@
+@model netbelt.ViewModels.BidViewModel
+@using Microsoft.AspNetCore.Http
+
+<form asp-controller="Auction" asp-action="CreateBid" method="post">
+    <div asp-validation-summary="ModelOnly"></div>
+    <span asp-validation-for="Amount"></span>
+    <label asp-for="Amount">Bid amount:</label>
+    <input asp-for="Amount" type="number" min=".01" step=".01">
+    <br>
+    <input asp-for="AuctionID" value="@ViewBag.AuctionID" type="hidden">
+    <br>
+    <input asp-for="UserID" value="@Context.Session.GetInt32("UserID")" type="hidden">
+    <br>
+    <input type="submit" value="Bid!">
+</form>

@@ -1,0 +1,39 @@
+@using netbelt.Models
+@using System
+@using Microsoft.AspNetCore.Http
+@model List<Auction>
+
+<table>
+    <tr>
+        <th>Product</th>
+        <th>Seller</th>
+        <th>Top Bid</th>
+        <th>Time Remaining</th>
+        <th>Actions</th>
+    </tr>
+    <!-- quote a bit of logic for a view... -->
+    @foreach(var auction in Model) {
+        <tr>
+            <td><a asp-action="ShowAuction" asp-controller="Auction" asp-route-id="@auction.ID">@auction.ProductName</a></td>
+            <td>@auction.User.FirstName</td>
+            <td>
+                @{
+                    var temp_top_bid = auction.Bids.OrderByDescending(b => b.Amount).Take(1).SingleOrDefault();
+                    var top_bid = temp_top_bid != null ? "$" + temp_top_bid.Amount.ToString() : "No bids yet!";
+                }
+                @top_bid
+            </td>
+            <td>
+                @{
+                    var time_remaining = (int)Math.Floor((auction.EndDate - ViewBag.Now).TotalDays) + " days";
+                }
+                @time_remaining
+            </td>
+            <td>
+                @if(auction.UserID == Context.Session.GetInt32("UserID")) {
+                    <a asp-action="DeleteAuction" asp-controller="Auction" asp-route-id="@auction.ID">Delete</a>
+                }
+            </td>
+        </tr>
+    }
+</table>
