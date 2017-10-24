@@ -15,11 +15,13 @@ namespace netbelt.Models
         public List<Auction> Auctions { get; set; } = new List<Auction>();
         public List<Bid> Bids { get; set; } = new List<Bid>();
 
+        // returns the dollar amount that is on hold for this user. Probably requires Bids to be explicitly populated before getting this value.
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public double HeldAmount
         {
             get
             {
+                // sums up bids made by the user where s/he is the highest bidder
                 double? held_amount = this.Bids.Where(b => b.Highest == true).Sum(b => b.Amount);
                 return held_amount != null ? (double)held_amount : 0;
             }

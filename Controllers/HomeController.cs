@@ -20,7 +20,7 @@ namespace netbelt.Controllers
             _context = context;
         }
 
-        // GET: /Home/
+        // displays login/registration forms
         [HttpGet]
         [Route("")]
         public IActionResult Index()
@@ -29,12 +29,13 @@ namespace netbelt.Controllers
             return View();
         }
 
-        // i apologize for routing ugliness. Will fix if there's time
+        // logs a user in
         [HttpPost]
         [Route("login")]
         public IActionResult Login(LoginViewModel model) {
             if (ModelState.IsValid) {
                 User user = _context.Users.SingleOrDefault(u => u.Username == model.LoginUsername);
+                // this validation should probably live in extensions as a custom validation attribute for the login VM
                 if (user != null && BCrypt.Net.BCrypt.Verify(model.LoginPassword, user.Password)) {
                     HttpContext.Session.SetInt32("UserID", user.ID);
                     HttpContext.Session.SetString("FirstName", user.FirstName);
@@ -45,12 +46,12 @@ namespace netbelt.Controllers
             return View("Index");
         }
 
+        // registers a user
         [HttpPost]
         [Route("register")]
         public IActionResult Register(RegistrationViewModel model) {
             if (ModelState.IsValid) {
-                // make sure a user with specified username doesn't already exist
-                // all of this logic (and login logic too) should technically live in a service, but I probably won't have time to add it
+                // make sure a user with specified username doesn't already exist (this should probably live in Extensions as a custom validation attribute for the registration VM)
                 if (_context.Users.SingleOrDefault(u => u.Username == model.RegistrationUsername) == null) {
                     User user = new User {
                         Username = model.RegistrationUsername,
@@ -71,6 +72,7 @@ namespace netbelt.Controllers
             return View("Index");
         }
 
+        // clears session, thus barring access to bootleg-protected routes
         [HttpGet]
         [Route("logout")]
         public IActionResult Logout() {
@@ -78,16 +80,20 @@ namespace netbelt.Controllers
             return RedirectToAction("Index");
         }
 
+        // goes through the list of auctions that have ended, but haven't been resolved yet, and settles the transactions. Runs on home page refresh. Probably should run asynchronously at an interval on the server.
         private void processAuctions() {
-            // i mean aside from creating an async server side function that runs on an interval to check for ended auctions, this is the best solution i can come up with at this time
             List<Auction> ended_auctions = _context.Auctions.Include(a => a.Bids).Include(a => a.User).Where(a => a.EndDate <= DateTime.UtcNow && a.Resolved == false).ToList();
             foreach(var auction in ended_auctions) {
                 var auction_owner = auction.User;
+                // getting a top bid could be refactored to utilize the fancy new Highest bid tag instead of this monstrocity here and in views. I bring great shame upon my family.
                 var top_bid = auction.Bids.OrderByDescending(b => b.Amount).Take(1).SingleOrDefault();
                 if (top_bid != null) {
                     var bidding_user = _context.Users.Find(top_bid.UserID);
+                    // once we have a user that created the auction and the user who made the top bid, transfer money from one to the other.
                     auction_owner.WalletBalance += top_bid.Amount;
                     bidding_user.WalletBalance -= top_bid.Amount;
+                    // unflag bid as Highest to remove the hold. Come to think of it, Highest was probably not the best variable name ever. Come to think of it, this isn't the greatest way to handle payment contracts to begin with.
+                    top_bid.Highest = false;
                     auction.Resolved = true;
                 }
             }
