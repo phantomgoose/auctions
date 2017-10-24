@@ -1,4 +1,5 @@
 @using System
+@using System.Linq
 @model netbelt.Models.Auction
 
 @{
@@ -14,3 +15,22 @@
     <span>@top_bid by @temp_top_bid.User.FirstName @temp_top_bid.User.LastName</span>
     } else { <span>No bids yet!</span> }</p>
 @await Component.InvokeAsync("CreateBid", Model.ID)
+@if(Model.Bids.Count > 0) {
+    <h4>Bid history:</h4>
+    <table>
+        <tr>
+            <th>Amount</th>
+            <th>User</th>
+            <th>Timestamp</th>
+        </tr>
+        @foreach(var bid in Model.Bids.OrderByDescending(b => b.CreatedAt)) {
+            <tr>
+                <td>@bid.Amount</td>
+                <td>@bid.User.FirstName</td>
+                <td>@bid.CreatedAt.ToString("g")</td>
+            </tr>
+        }
+    </table>
+} else {
+    <p>Starting minimum: $@Model.StartingBid</p>
+}

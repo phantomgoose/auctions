@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -28,10 +29,11 @@ namespace netbelt.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            User user = _context.Users.Find(HttpContext.Session.GetInt32("UserID"));
+            User user = _context.Users.Where(u => u.ID == HttpContext.Session.GetInt32("UserID")).Include(u => u.Bids).SingleOrDefault();
             if (user != null) {
                 // THIS DOES NOT INCLUDE HOLDS FROM BIDS. Intentional.
                 ViewBag.Wallet = user.WalletBalance;
+                ViewBag.HeldAmount = user.HeldAmount;
             }
             return View();
         }
@@ -110,10 +112,16 @@ namespace netbelt.Controllers
                 return RedirectToAction("Index", "Home");
             }
             if (ModelState.IsValid) {
+                // set all other bids to not be highest
+                List<Bid> other_bids = _context.Auctions.Where(a => a.ID == model.AuctionID).Include(a => a.Bids).SingleOrDefault().Bids;
+                foreach(Bid other_bid in other_bids) {
+                    other_bid.Highest = false;
+                }
                 Bid bid = new Bid {
                     Amount = model.Amount,
                     UserID = model.UserID,
                     AuctionID = model.AuctionID,
+                    Highest = true,
                 };
                 _context.Bids.Add(bid);
                 _context.SaveChanges();

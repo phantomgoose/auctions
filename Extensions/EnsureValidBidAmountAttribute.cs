@@ -19,19 +19,21 @@ namespace netbelt.Extensions {
             if (user == null || auction == null) {
                 return new ValidationResult("Invalid user or auction ID");
             }
+            if (current_top_bid.UserID == model.UserID) {
+                return new ValidationResult("You're already the highest bidder!");
+            }
             // let's also make sure the auction hasn't expired
             if (DateTime.UtcNow >= auction.EndDate) {
                 return new ValidationResult("This auction has expired. You can't submit bids on it anymore.");
             }
-            double held_amount = 0;
-            foreach(var bid in user.Bids) {
-                held_amount += bid.Amount;
-            }
-            if (model.Amount > user.WalletBalance - held_amount) {
+            if (model.Amount > user.WalletBalance - user.HeldAmount) {
                 return new ValidationResult("You don't have enough money for this bid.");
             }
             if (current_top_bid != null && model.Amount <= current_top_bid.Amount) {
                 return new ValidationResult("Your bid is too low!");
+            }
+            if (model.Amount < auction.StartingBid) {
+                return new ValidationResult("Your bid must meet the starting minimum.");
             }
             return ValidationResult.Success;
         }

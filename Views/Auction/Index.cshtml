@@ -3,4 +3,5 @@
 }
 @await Component.InvokeAsync("ListAuctions")
 <button onclick="location.href='@Url.Action("CreateForm", "Auction")'">Create auction</button>
-<p>Your current balance: @ViewBag.Wallet</p>
+<p>Your current wallet balance: $@ViewBag.Wallet</p>
+<p>Available for bidding: $@(ViewBag.Wallet-ViewBag.HeldAmount)</p>

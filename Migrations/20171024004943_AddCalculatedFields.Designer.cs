@@ -8,9 +8,10 @@ using netbelt.Contexts;
 namespace netbelt.Migrations
 {
     [DbContext(typeof(NetBeltContext))]
-    partial class NetBeltContextModelSnapshot : ModelSnapshot
+    [Migration("20171024004943_AddCalculatedFields")]
+    partial class AddCalculatedFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
