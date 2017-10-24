@@ -19,6 +19,9 @@ namespace netbelt.Extensions {
             if (user == null || auction == null) {
                 return new ValidationResult("Invalid user or auction ID");
             }
+            if (auction.UserID == model.UserID) {
+                return new ValidationResult("You can't bid on your own auction.");
+            }
             if (current_top_bid.UserID == model.UserID) {
                 return new ValidationResult("You're already the highest bidder!");
             }
