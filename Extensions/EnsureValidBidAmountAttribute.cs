@@ -22,7 +22,7 @@ namespace netbelt.Extensions {
             if (auction.UserID == model.UserID) {
                 return new ValidationResult("You can't bid on your own auction.");
             }
-            if (current_top_bid.UserID == model.UserID) {
+            if (current_top_bid != null && current_top_bid.UserID == model.UserID) {
                 return new ValidationResult("You're already the highest bidder!");
             }
             // let's also make sure the auction hasn't expired
