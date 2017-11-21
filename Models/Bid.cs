@@ -1,4 +1,4 @@
-namespace netbelt.Models {
+namespace Auctions.Models {
     public class Bid : BaseEntity {
         public double Amount {get; set;}
         public int UserID {get; set;}

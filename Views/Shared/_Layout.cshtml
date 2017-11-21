@@ -10,8 +10,7 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <!-- hacky way to check if the navbar should be displayed (ie we logged in already). NavBar is NOT shown as required on Home page in the exam screenshots, which is odd, but w/e -->
-    <!-- also not even attempting to float this shit to the right. CSS is the bane of my existence. -->
+    <!-- hacky way to check if the navbar should be displayed (ie we logged in already). -->
     @if(ViewData["Title"] != null && ViewData["Title"] != "Home") {
         <nav>
         <span>Hi @Context.Session.GetString("FirstName")!</span>

@@ -3,10 +3,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Hosting;
-using netbelt.Contexts;
+using Auctions.Contexts;
 using Microsoft.EntityFrameworkCore;
 
-namespace netbelt
+namespace Auctions
 {
     public class Startup
     {
@@ -16,7 +16,6 @@ namespace netbelt
             var builder = new ConfigurationBuilder().SetBasePath(env.ContentRootPath).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
             .AddEnvironmentVariables();
             Configuration = builder.Build();
-
         }
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -25,8 +24,7 @@ namespace netbelt
             services.AddMvc();
             services.AddSession();
             services.Configure<PostgresOptions>(Configuration.GetSection("DBInfo"));
-            services.AddEntityFrameworkNpgsql().AddDbContext<NetBeltContext>(options => options.UseNpgsql(Configuration["DBInfo:connectionString"]));
-
+            services.AddEntityFrameworkNpgsql().AddDbContext<AuctionsContext>(options => options.UseNpgsql(Configuration["DBInfo:connectionString"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

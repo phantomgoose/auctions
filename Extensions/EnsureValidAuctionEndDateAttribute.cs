@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace netbelt.Extensions {
+namespace Auctions.Extensions {
     // verifies that the auction end date is in the future
     public class EnsureValidAuctionEndDateAttribute : ValidationAttribute {
         protected override ValidationResult IsValid(object value, ValidationContext context) {

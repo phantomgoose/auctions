@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
-namespace netbelt.Models
+namespace Auctions.Models
 {
     public class User : BaseEntity
     {

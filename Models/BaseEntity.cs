@@ -1,6 +1,6 @@
 using System;
 
-namespace netbelt.Models {
+namespace Auctions.Models {
     public abstract class BaseEntity {
         public int ID {get; set;}
         // all times are in UTC to avoid messing with time zone conversion.

@@ -1,10 +1,10 @@
 @using System
 @using System.Linq
-@model netbelt.Models.Auction
+@model Auctions.Models.Auction
 
 @{
     ViewData["Title"] = Model.ProductName;
-    var time_remaining = (int)Math.Floor((Model.EndDate - ViewBag.Now).TotalDays) + " days"; // this will cause display issues for expired auctions, but those shouldn't be accessible via normal means
+    var time_remaining = (int)Math.Floor((Model.EndDate - ViewBag.Now).TotalDays) + " days"; // this will cause display issues for expired auctions, but those shouldn't be accessible via normal means anyway
     var temp_top_bid = Model.Bids.OrderByDescending(b => b.Amount).Take(1).SingleOrDefault();
     var top_bid = temp_top_bid != null ? "$" + temp_top_bid.Amount.ToString() : "No bids yet!";
 }

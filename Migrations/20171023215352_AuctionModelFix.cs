@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace netbelt.Migrations
+namespace Auctions.Migrations
 {
     public partial class AuctionModelFix : Migration
     {

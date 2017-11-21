@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using netbelt.Contexts;
+using Auctions.Contexts;
 
-namespace netbelt.Migrations
+namespace Auctions.Migrations
 {
-    [DbContext(typeof(NetBeltContext))]
+    [DbContext(typeof(AuctionsContext))]
     partial class NetBeltContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

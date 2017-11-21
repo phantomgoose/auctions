@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using netbelt.ViewModels;
-using netbelt.Models;
-using netbelt.Contexts;
+using Auctions.ViewModels;
+using Auctions.Models;
+using Auctions.Contexts;
 using Microsoft.EntityFrameworkCore;
 
-namespace netbelt.Controllers
+namespace Auctions.Controllers
 {
     public class AuctionController : Controller
     {
 
-        private readonly NetBeltContext _context;
+        private readonly AuctionsContext _context;
 
-        public AuctionController(NetBeltContext context)
+        public AuctionController(AuctionsContext context)
         {
             _context = context;
         }
@@ -96,7 +96,7 @@ namespace netbelt.Controllers
 
         // deletes the specified auction
         [HttpGet]
-        [Route("auction/{id}/delete")] // this should be a delete http request, but it would require JS on the client side which im trying to avoid
+        [Route("auction/{id}/delete")] // this should ideally be a delete http request, but I'm not using client side js for now
         public IActionResult DeleteAuction(int id) {
             if (!isLoggedIn())
             {
@@ -105,7 +105,7 @@ namespace netbelt.Controllers
             Auction auction = _context.Auctions.Find(id);
             // make sure user really does own the auction
             if (auction.UserID == HttpContext.Session.GetInt32("UserID")) {
-                // really shouldn't be deleting information entirely off a site that handles financial transactions
+                // ideally, we wouldn't delete information entirely off a site that handles financial transactions
                 _context.Auctions.Remove(auction);
                 _context.SaveChanges();
             }
@@ -142,7 +142,7 @@ namespace netbelt.Controllers
             return View("ShowAuction", auction);
         }
 
-        // bootleg.jpg
+        // bootleg_route_protection.jpg
         private bool isLoggedIn()
         {
             return HttpContext.Session.Keys.Contains("UserID") && HttpContext.Session.GetInt32("UserID") != null;

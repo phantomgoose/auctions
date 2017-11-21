@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using netbelt.ViewModels;
+using Auctions.ViewModels;
 
-namespace netbelt.ViewComponents {
+namespace Auctions.ViewComponents {
     public class CreateAuctionViewComponent : ViewComponent {
         // using async call here because I had issues with rendering synchronous ViewComponent methods in Views
         public async Task<IViewComponentResult> InvokeAsync() {

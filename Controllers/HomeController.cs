@@ -4,19 +4,19 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using netbelt.Models;
-using netbelt.ViewModels;
-using netbelt.Contexts;
+using Auctions.Models;
+using Auctions.ViewModels;
+using Auctions.Contexts;
 using BCrypt.Net;
 using Microsoft.EntityFrameworkCore;
 
-namespace netbelt.Controllers
+namespace Auctions.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly NetBeltContext _context;
+        private readonly AuctionsContext _context;
 
-        public HomeController (NetBeltContext context) {
+        public HomeController (AuctionsContext context) {
             _context = context;
         }
 
@@ -72,7 +72,7 @@ namespace netbelt.Controllers
             return View("Index");
         }
 
-        // clears session, thus barring access to bootleg-protected routes
+        // clears session, thus barring access to protected routes
         [HttpGet]
         [Route("logout")]
         public IActionResult Logout() {
@@ -80,13 +80,12 @@ namespace netbelt.Controllers
             return RedirectToAction("Index");
         }
 
-        // goes through the list of auctions that have ended, but haven't been resolved yet, and settles the transactions. Runs on home page refresh. Probably should run asynchronously at an interval on the server.
+        // goes through the list of auctions that have ended, but haven't been resolved yet, and settles the transactions. Runs on home page refresh. Probably should run asynchronously at an interval on the server instead. Bootleg.png
         private void processAuctions() {
-            List<Auction> ended_auctions = _context.Auctions.Include(a => a.Bids).Include(a => a.User).Where(a => a.EndDate <= DateTime.UtcNow && a.Resolved == false).ToList();
+            List<Auction> ended_auctions = _context.Auctions.Include(a => a.Bids).Include(a => a.User).Where(a => a.Resolved == false && a.EndDate <= DateTime.UtcNow).ToList();
             foreach(var auction in ended_auctions) {
                 var auction_owner = auction.User;
-                // getting a top bid could be refactored to utilize the fancy new Highest bid tag instead of this monstrocity here and in views. I bring great shame upon my family.
-                var top_bid = auction.Bids.OrderByDescending(b => b.Amount).Take(1).SingleOrDefault();
+                var top_bid = auction.Bids.Where(b => b.Highest).SingleOrDefault();
                 if (top_bid != null) {
                     var bidding_user = _context.Users.Find(top_bid.UserID);
                     // once we have a user that created the auction and the user who made the top bid, transfer money from one to the other.

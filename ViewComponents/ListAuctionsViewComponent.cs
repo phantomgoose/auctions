@@ -4,17 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using netbelt.Contexts;
-using netbelt.Models;
+using Auctions.Contexts;
+using Auctions.Models;
 
-namespace netbelt.ViewComponents
+namespace Auctions.ViewComponents
 {
 
     public class ListAuctionsViewComponent : ViewComponent {
 
-        private readonly NetBeltContext _context;
+        private readonly AuctionsContext _context;
 
-        public ListAuctionsViewComponent(NetBeltContext context) {
+        public ListAuctionsViewComponent(AuctionsContext context) {
             _context = context;
         }
 

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace netbelt.Models {
+namespace Auctions.Models {
     public class Auction : BaseEntity {
         public string ProductName {get; set;}
         public string Description {get; set;}

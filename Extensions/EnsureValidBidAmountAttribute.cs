@@ -1,13 +1,13 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using netbelt.ViewModels;
-using netbelt.Contexts;
-using netbelt.Models;
+using Auctions.ViewModels;
+using Auctions.Contexts;
+using Auctions.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace netbelt.Extensions {
+namespace Auctions.Extensions {
     // verifies the Bid model to ensure the bid amount (and the bid as a whole) is valid
     [AttributeUsage(AttributeTargets.Class)]
     public class EnsureValidBidAmountAttribute : ValidationAttribute {
@@ -15,7 +15,7 @@ namespace netbelt.Extensions {
             // since this attribute targets the entire model, Value will be the model. Cast it as such.
             var model = (BidViewModel)value;
             // get database context from the injected ValidationContext
-            var _context = (NetBeltContext)context.GetService(typeof(NetBeltContext));
+            var _context = (AuctionsContext)context.GetService(typeof(AuctionsContext));
             // get target auction
             var auction = _context.Auctions.Include(a => a.Bids).Include(a => a.User).Where(a => a.ID == model.AuctionID).SingleOrDefault();
             // get current top bid

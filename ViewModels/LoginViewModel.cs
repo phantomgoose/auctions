@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace netbelt.ViewModels
+namespace Auctions.ViewModels
 {
     public class LoginViewModel
     {

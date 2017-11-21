@@ -1,8 +1,5 @@
 {
-  "name": "netbelt",
-  "private": true,
-  "dependencies": {
-    
-    
-  }
+    "name": "Auctions",
+    "private": true,
+    "dependencies": {}
 }

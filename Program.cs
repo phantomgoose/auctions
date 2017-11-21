@@ -1,7 +1,7 @@
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 
-namespace netbelt
+namespace Auctions
 {
     public class Program
     {
@@ -12,7 +12,6 @@ namespace netbelt
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
                 .Build();
-
             host.Run();
         }
     }

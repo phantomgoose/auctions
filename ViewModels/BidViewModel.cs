@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using netbelt.Extensions;
+using Auctions.Extensions;
 
-namespace netbelt.ViewModels {
+namespace Auctions.ViewModels {
     // custom validation for bid amount
     [EnsureValidBidAmount]
     public class BidViewModel {
